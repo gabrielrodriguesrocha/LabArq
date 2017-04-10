@@ -86,12 +86,26 @@ BEGIN
 		PC_out		=> PCAddr,
 		Instruction	=> DataInstr);
 
-	--CTR: Control
+	CTR: Control
+	PORT MAP(
+		Opcode => DataInstr(31 DOWNTO 26),
+		RegDst => RegDst,
+		RegWrite => RegWrite);	
 
+	IDEC: Idecode
+	PORT MAP(	
+			read_data_1	=> readData1,
+			read_data_2	=> readData2,
+			Instruction => DataInstr,
+			ALU_result	=> ALUResult,
+			RegWrite 	=> RegWrite,
+			RegDst 		=> RegDst,
+			Sign_extend => SignExtend,
+			clock		=> clock);
 
-	--IDEC: Idecode
-
-
-	--EXE: Execute
-
+	EXE: Execute
+	PORT MAP( 
+			Read_data1 => readData1, 
+			Read_data2 => readData2,
+			ALU_Result => ALUResult);
 END exec;
