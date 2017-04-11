@@ -27,7 +27,7 @@ BEGIN
 		widthad_a		=> 8,   -- tamanho do barramento de endereco
 		lpm_type			=> "altsyncram",
 		outdata_reg_a	=> "UNREGISTERED",
-		init_file		=> "programT.mif",  -- arquivo com estado inicial
+		init_file		=> "program.mif",  -- arquivo com estado inicial
 		intended_device_family => "Cyclone")
 	PORT MAP(
 		address_a	=> Mem_Addr,

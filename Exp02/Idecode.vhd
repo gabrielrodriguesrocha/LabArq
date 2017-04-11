@@ -65,11 +65,10 @@ PROCESS
 		IF reset = '1' THEN
 			-- Inicializa os registradores com seu numero
 			FOR i IN 0 TO 31 LOOP
-				register_array(i) <= CONV_STD_LOGIC_VECTOR( i, 32 );
+				reg_bank(i) <= CONV_STD_LOGIC_VECTOR( i, 32 );
  			END LOOP;
   		ELSIF RegWrite = '1' AND write_reg_ID /= "00000" THEN
 				reg_bank(CONV_INTEGER(write_reg_ID)) <= write_data;
-			<inserir>
 		END IF;
 	END PROCESS;
 END behavior;

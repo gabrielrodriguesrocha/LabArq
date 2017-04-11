@@ -61,11 +61,12 @@ SIGNAL SignExtend	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL readData1	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL readData2	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL HexDisplayDT	: STD_LOGIC_VECTOR(43 DOWNTO 0);
+SIGNAL displaySwitch : STD_LOGIC;
 
 BEGIN
 	LCD_ON <= '1';
 	
-	-- Inserir MUX para DisplayData
+	DisplayData <= DataInstr WHEN displaySwitch = '1' ELSE ALUResult;
 						
 	HexDisplayDT <= "0000" & PCAddr & DisplayData;
 
@@ -101,7 +102,8 @@ BEGIN
 			RegWrite 	=> RegWrite,
 			RegDst 		=> RegDst,
 			Sign_extend => SignExtend,
-			clock		=> clock);
+			clock		=> clock,
+			reset 	=> reset);
 
 	EXE: Execute
 	PORT MAP( 
