@@ -15,7 +15,7 @@ L5
 VXQl>6LXoF>1cNS[^eWEF>0
 Z7 OV;C;10.1b;51
 31
-Z8 !s108 1491954337.723000
+Z8 !s108 1492041913.558000
 Z9 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Control.VHD|
 Z10 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Control.VHD|
 Z11 o-93 -work work -O0
@@ -54,7 +54,7 @@ VKJ>5;6S`BkaGcQPVo2>l00
 R7
 31
 !i10b 1
-Z17 !s108 1491954337.857000
+Z17 !s108 1492041913.791000
 Z18 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Execute.vhd|
 Z19 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Execute.vhd|
 R11
@@ -89,7 +89,7 @@ L4
 V`=Vk;DHYDFZ90B2jV:4Nn0
 R7
 31
-Z23 !s108 1491954337.573000
+Z23 !s108 1492041913.414000
 Z24 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Exp02.vhd|
 Z25 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Exp02.vhd|
 R11
@@ -126,7 +126,7 @@ L7
 V732`5VhUYN;P[:6ffIzCl1
 R7
 31
-Z30 !s108 1491954337.412000
+Z30 !s108 1492041913.263000
 Z31 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Idecode.vhd|
 Z32 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Idecode.vhd|
 R11
@@ -166,7 +166,7 @@ L9
 V@>8LHZPf9jYo4JGiNJPS23
 R7
 31
-Z36 !s108 1491954337.223000
+Z36 !s108 1492041913.088000
 Z37 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Ifetch.vhd|
 Z38 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/Ifetch.vhd|
 R11
@@ -206,7 +206,7 @@ L6
 VjB4l`FO?NZCX>`aX2gLmc0
 R7
 31
-Z41 !s108 1491954336.784000
+Z41 !s108 1492041912.640000
 Z42 !s90 -reportprogress|300|-93|-work|work|C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/LCD_Display.vhd|
 Z43 !s107 C:/Users/Gabriel/Documents/BCC3/LabArq/Exp02/LCD_Display.vhd|
 R11
