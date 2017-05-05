@@ -24,6 +24,9 @@ END COMPONENT;
 COMPONENT Ifetch
 	PORT(	reset			: in STD_LOGIC;
 			clock			: in STD_LOGIC;
+			Branch		: in STD_LOGIC;
+			Zero			: in STD_LOGIC;
+			ADDResult 	: in STD_LOGIC_VECTOR(7 DOWNTO 0);
 			PC_out		: out STD_LOGIC_VECTOR(7 DOWNTO 0);
 			Instruction	: out STD_LOGIC_VECTOR(31 DOWNTO 0));
 END COMPONENT;
@@ -38,7 +41,8 @@ COMPONENT Idecode
 				RegDst 		: IN 	STD_LOGIC;
 				Sign_extend : OUT STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 				clock,reset	: IN 	STD_LOGIC;
-				MemToReg 	: IN  STD_LOGIC);
+				MemToReg 	: IN  STD_LOGIC;
+				MemAddr		: OUT STD_LOGIC_VECTOR( 7 DOWNTO 0));
 END COMPONENT;
 
 COMPONENT Control
@@ -48,15 +52,19 @@ COMPONENT Control
 			MemToReg 	: OUT STD_LOGIC;
 			MemRead 		: OUT STD_LOGIC;
 			MemWrite 	: OUT STD_LOGIC;
-			AluSrc		: OUT STD_LOGIC);
+			AluSrc		: OUT STD_LOGIC;
+			Branch		: OUT STD_LOGIC);
 END COMPONENT;
 	
 COMPONENT Execute
 	PORT( Read_data1 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Read_data2 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			PC				: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
 			ALU_Result 	: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Signal_Ext 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
-			Alu_Src		: IN STD_LOGIC);
+			Alu_Src		: IN STD_LOGIC;
+			Zero			: OUT STD_LOGIC;
+			ADDResult 	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0));
 			
 END COMPONENT;
 
@@ -83,7 +91,11 @@ SIGNAL auxAluSrc   : STD_LOGIC;
 SIGNAL auxMemWrite : STD_LOGIC; 
 SIGNAL auxMemToReg : STD_LOGIC;
 SIGNAL auxMemRead  : STD_LOGIC;
-SIGNAL DMemoryOut   : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL DMemoryOut  : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL auxMemAddr  : STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL auxBranch 	 : STD_LOGIC;
+SIGNAL auxZero		 : STD_LOGIC;
+SIGNAL auxAddResult : STD_LOGIC_VECTOR (7 DOWNTO 0);
 
 BEGIN
 	LCD_ON <= '1';
@@ -108,7 +120,10 @@ BEGIN
 		reset			=> reset,
 		clock 		=> clock,
 		PC_out		=> PCAddr,
-		Instruction	=> DataInstr);
+		Instruction	=> DataInstr,
+		Branch		=> auxBranch,
+		Zero			=> auxZero,
+		AddResult	=> auxAddResult);
 		
 	CTR: Control
 	PORT MAP(
@@ -118,7 +133,8 @@ BEGIN
 		MemToReg => auxMemToReg,
 		MemRead 	=> auxMemRead,
 		MemWrite => auxMemWrite,
-		AluSrc	=> auxAluSrc);
+		AluSrc	=> auxAluSrc,
+		Branch	=> auxBranch);
 
 	IDEC: Idecode
 	PORT MAP(	
@@ -132,7 +148,8 @@ BEGIN
 			Sign_extend => SignExtend,
 			clock			=> clock,
 			reset 		=> reset,
-			MemToReg 	=> auxMemToReg);
+			MemToReg 	=> auxMemToReg,
+			MemAddr		=> auxMemAddr);
 
 	EXE: Execute
 	PORT MAP( 
@@ -140,13 +157,16 @@ BEGIN
 			Read_data2 => readData2,
 			ALU_Result => ALUResult,
 			Signal_Ext => signExtend,
-			Alu_Src	  => auxAluSrc);
+			PC			  => PCAddr,
+			Alu_Src	  => auxAluSrc,
+			Zero		  => auxZero,
+			AddResult  => auxAddResult);
 
 
 	DMEM: Dmemory
 	PORT MAP(	
 			read_data 	=> DMemoryOut,
-        	address 		=> DataInstr(7 DOWNTO 0),
+        	address 		=> auxMemAddr,
         	write_data 	=> readData2,
 	   	MemRead		=> auxMemRead,		
 			Memwrite	 	=> auxMemWrite,

@@ -9,7 +9,8 @@ ENTITY control IS
 			MemToReg 	: OUT STD_LOGIC;
 			MemRead 		: OUT STD_LOGIC;
 			MemWrite 	: OUT STD_LOGIC;
-			AluSrc		: OUT STD_LOGIC);
+			AluSrc		: OUT STD_LOGIC;
+			Branch		: OUT STD_LOGIC);
 END control;
 
 ARCHITECTURE behavior OF control IS
@@ -35,6 +36,8 @@ BEGIN
 	MemRead  <= '0' WHEN Opcode = "101011" ELSE '1'; 
 	MemToReg <= '1' WHEN Opcode = "100011" ELSE '0'; --Load
 	AluSrc   <= I_Format;
+	
+	Branch <= '1' WHEN Opcode = "000100" ELSE '0'; -- BEQ
 	
    END behavior;
 

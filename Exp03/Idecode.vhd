@@ -14,7 +14,8 @@ ENTITY Idecode IS
 				RegDst 		: IN 	STD_LOGIC;
 				Sign_extend : OUT STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 				clock,reset	: IN 	STD_LOGIC;
-				MemToReg 	: IN  STD_LOGIC);
+				MemToReg 	: IN  STD_LOGIC;
+				MemAddr		: OUT STD_LOGIC_VECTOR( 7 DOWNTO 0));
 END Idecode;
 
 ARCHITECTURE behavior OF Idecode IS
@@ -64,6 +65,8 @@ BEGIN
    Sign_extend <= X"0000" & Immediate_value
 		WHEN Immediate_value(15) = '0'
 		ELSE X"FFFF" & Immediate_value;
+		
+	MemAddr <= readDataSignal1( 7 DOWNTO 0) + Immediate_value (7 DOWNTO 0);
 
 PROCESS
 	BEGIN

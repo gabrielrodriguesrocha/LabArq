@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Thu May 04 21:02:37 2017
+Quartus II 32-bit Version : 12.1 Build 177 11/07/2012 SJ Web Edition
+Revision Name : Exp03
+Top-level Entity Name : Exp03
+Family : Cyclone II
+Total logic elements : 2,664
+    Total combinational functions : 1,709
+    Dedicated logic registers : 1,060
+Total registers : 1060
+Total pins : 16
+Total virtual pins : 0
+Total memory bits : 16,384
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

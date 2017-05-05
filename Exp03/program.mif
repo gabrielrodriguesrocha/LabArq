@@ -1,21 +1,32 @@
--- MIPS Instruction Memory Initialization File
-Depth = 256;
-Width = 32;
-Address_radix = HEX;
-Data_radix = HEX;
-Content
-Begin
--- Place MIPS Instructions here
--- Note: memory addresses are in words and not bytes
--- i.e. next location is +1 and not +4
-	00: 8C020000; 	-- lw $2,0 ;memory(00)=55
-	01: 8C030001; 	-- lw $3,1 ;memory(01)=AA
-	02: 00430820; 	-- add $1,$2,$3
-	03: AC010003; 	-- sw $1,3 ;memory(03)=FF
-	04: 8C040003; 	-- lw $4,3 ;memory(03)=FFFFFFFF
-	05: 1022FFFF; 	-- beq $1,$2,-4
-	06: 1021FFF9; 	-- beq $1,$1,-28
-	-- Use NOPS for default instruction memory values
-	[07..FF]: 00000000; -- nop (sll r0,r0,0)
+-- Copyright (C) 1991-2012 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
 
-End;
+-- Quartus II generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=256;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+	000  :   8C020000;
+	001  :   8C030001;
+	002  :   00430820;
+	003  :   AC010003;
+	004  :   8C040003;
+	005  :   1022FFFF;
+	006  :   1021FFF9;
+	[007..0FF]  :   00000000;
+END;

@@ -9,6 +9,9 @@ USE altera_mf.altera_mf_components.ALL;
 ENTITY Ifetch IS
 	PORT(	reset			: in STD_LOGIC;
 			clock			: in STD_LOGIC;
+			Branch		: in STD_LOGIC;
+			Zero			: in STD_LOGIC;
+			ADDResult 	: in STD_LOGIC_VECTOR(7 DOWNTO 0);
 			PC_out		: out STD_LOGIC_VECTOR(7 DOWNTO 0);
 			Instruction	: out STD_LOGIC_VECTOR(31 DOWNTO 0));
 END Ifetch;
@@ -52,6 +55,7 @@ BEGIN
 	-- Entao o PC tem que ser atualizado simultaneamente com o reg interno da memoria
 	Mem_Addr <= Next_PC;
 	Next_PC <= 	"00000000" WHEN reset='1' ELSE
+					ADDResult WHEN (Branch = '1' AND Zero = '1') ELSE
 					PC_inc;
 	PC_out <= PC;
 
