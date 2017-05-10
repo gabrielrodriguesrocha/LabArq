@@ -86,7 +86,6 @@ SIGNAL SignExtend	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL readData1	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL readData2	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL HexDisplayDT	: STD_LOGIC_VECTOR(43 DOWNTO 0);
-SIGNAL chaveDis	 : STD_LOGIC;
 SIGNAL auxAluSrc   : STD_LOGIC;
 SIGNAL auxMemWrite : STD_LOGIC; 
 SIGNAL auxMemToReg : STD_LOGIC;
@@ -101,7 +100,7 @@ BEGIN
 	LCD_ON <= '1';
 	
 	-- Inserir MUX para DisplayData
-	displayData <= DataInstr WHEN chaveDis = '1' ELSE AluResult; 
+	displayData <= DataInstr WHEN InstrALU = '1' ELSE AluResult; 
 						
 	HexDisplayDT <= "0000" & PCAddr & DisplayData;
 

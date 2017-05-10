@@ -19,5 +19,4 @@ Sim dir               :  simulation\modelsim
 
 Info: Starting NativeLink simulation with ModelSim-Altera software
 Sourced NativeLink script d:/programs/altera/12.1/quartus/common/tcl/internal/nativelink/modelsim.tcl
-Warning: File Exp03_run_msim_rtl_vhdl.do already exists - backing up current file as Exp03_run_msim_rtl_vhdl.do.bak5
 Info: Spawning ModelSim-Altera Simulation software 
