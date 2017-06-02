@@ -42,6 +42,11 @@ BEGIN
 	MemToReg <= '1' WHEN Opcode = "100011" ELSE '0'; --Load
 	AluSrc   <= I_Format;
 	
+	--Convenção:
+	--Branch = 10 <- BEQ
+	--Branch = 01 <- BNE
+	--Observe que não é mais possível ter um sinal de 1 bit para desvios
+	
 	Branch( 1 ) <= '1' WHEN Opcode = "000100" ELSE -- BEQ 
 						'0';
 

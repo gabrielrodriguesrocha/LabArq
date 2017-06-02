@@ -22,10 +22,13 @@ ARCHITECTURE behavior OF Execute IS
 	SIGNAL Alu_ctl : STD_LOGIC_VECTOR(3 DOWNTO 0);
 	BEGIN
 	
+	--Lógica que gera os códigos de operação na ALU
+	--	Necessário alterar para implementar SLL/SRL (i.e. fazer outra Tabela-Verdade)
+	--	Favor testar todas as instruções implementadas antes e após alterar a lógica!!!
 	ALU_ctl( 0 ) <= ( Funct( 0 ) OR Funct( 3 ) ) AND ALUOp(1 );
 	ALU_ctl( 1 ) <= ( NOT Funct( 2 ) ) OR (NOT ALUOp( 1 ) );
 	ALU_ctl( 2 ) <= ( Funct( 1 ) AND ALUOp( 1 )) OR ALUOp( 0 );
-	ALU_ctl( 3 ) <= Funct(3);
+	ALU_ctl( 3 ) <= Funct(3); --Convenção: 1000 é Jump, ver tabela no Patterson
 	
 	iAux <= Read_data2 WHEN Alu_src = '0' ELSE Signal_Ext;
 	
@@ -43,16 +46,20 @@ ARCHITECTURE behavior OF Execute IS
 			WHEN "0110" => ALU_Result <= Read_data1 - iAux;
 			-- Operação SLT
 			WHEN "0111" => ALU_Result <= Read_data1 - iAux;
+			-- Operação JR (truque sujo)
 			WHEN "1000" => ALU_Result <= Read_data1;
-			WHEN OTHERS => ALU_Result <= Read_data1;
+			WHEN OTHERS => ALU_Result <= Read_data1; --Placeholder, alterar depois
 		END CASE;
 	END PROCESS;
 	
 	Zero <= '0' WHEN (Read_data1 /= Read_data2) ELSE '1';
 	
+	--Convenção:
+	-- JumpReg é o sinal para instrução JR
+	-- No módulo Ifetch, PC receberá a saída da ALU quando JumpReg for alto
+	-- E nesse caso, a saída será exatamente o registrador destino, comumente o $ra (ver PROCESS acima)
 	JumpReg <= '1' WHEN ALU_ctl(3) = '1' ELSE '0';
 	
 	ADDResult <= PC + 1 + Signal_Ext (7 DOWNTO 0);
-	
-	--- multiplex ---
+
 END behavior;
