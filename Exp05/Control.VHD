@@ -33,6 +33,7 @@ BEGIN
 					
 	RegDst   <= R_format;
 	RegWrite <= '1' WHEN R_format = '1' ELSE
+					'1' WHEN Opcode = "001000"	ELSE -- ADDI
 					'1' WHEN Opcode = "100011" ELSE -- SW
 					'1' WHEN Opcode = "000011" ELSE -- JAL
 					'0';

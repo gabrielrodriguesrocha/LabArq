@@ -79,7 +79,7 @@ PROCESS
 			FOR i IN 0 TO 31 LOOP
 				reg_bank(i) <= CONV_STD_LOGIC_VECTOR( i, 32 );
  			END LOOP;
-  		ELSIF (RegWrite = '1' OR MemToReg = '1') AND write_reg_ID /= "00000" THEN
+  		ELSIF (RegWrite = '1') AND write_reg_ID /= "00000" THEN
 				reg_bank(CONV_INTEGER(write_reg_ID)) <= write_data;
 		ELSIF (RegWrite = '1') AND (Jump = '1') AND (Link = '1') THEN
 				reg_bank(31) <= (X"000000" & PC) + 1;

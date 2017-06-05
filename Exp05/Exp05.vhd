@@ -7,7 +7,7 @@ ENTITY Exp05 IS
 			LCD_RS, LCD_E	: OUT	STD_LOGIC;
 			LCD_RW, LCD_ON	: OUT STD_LOGIC;
 			DATA				: INOUT	STD_LOGIC_VECTOR(7 DOWNTO 0);
-			clock				: IN STD_LOGIC;
+			clockPB			: IN STD_LOGIC;
 			InstrALU			: IN STD_LOGIC);
 END Exp05;
 
@@ -134,7 +134,7 @@ BEGIN
 	IFT: Ifetch
 	PORT MAP(
 		reset			=> reset,
-		clock 		=> clock,
+		clock 		=> clockPB,
 		PC_out		=> PCAddr,
 		Instruction	=> DataInstr,
 		Branch		=> auxBranch,
@@ -169,7 +169,7 @@ BEGIN
 			RegWrite 	=> RegWrite,
 			RegDst 		=> RegDst,
 			Sign_extend => SignExtend,
-			clock			=> clock,
+			clock			=> clockPB,
 			reset 		=> reset,
 			MemToReg 	=> auxMemToReg,
 			MemAddr		=> auxMemAddr,
@@ -199,6 +199,6 @@ BEGIN
         	write_data 	=> readData2,
 	   	MemRead		=> auxMemRead,		
 			Memwrite	 	=> auxMemWrite,
-         clock			=> clock,
+         clock			=> clockPB,
 			reset			=> reset);
 END exec;
