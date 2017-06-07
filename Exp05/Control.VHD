@@ -27,10 +27,10 @@ BEGIN
 	I_format <= '1' WHEN Opcode = "100011" ELSE --LOAD
 					'1' WHEN Opcode = "101011" ELSE --STORE
 					'1' WHEN Opcode = "000100"	ELSE --BEQ
-					'1' WHEN Opcode = "000101"	ELSE --BNEQ
+					'1' WHEN Opcode = "000101"	ELSE --BNE
 					'1' WHEN Opcode = "001000"	ELSE --ADDI
 					'0';
-					
+	
 	RegDst   <= R_format;
 	RegWrite <= '1' WHEN R_format = '1' ELSE
 					'1' WHEN Opcode = "001000"	ELSE -- ADDI

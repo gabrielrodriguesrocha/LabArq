@@ -61,7 +61,7 @@ BEGIN
 	Next_PC <= 	"00000000" WHEN reset='1' ELSE -- RESET
 					ADDResult WHEN (Branch( 1 ) = '1' AND Branch( 0 ) = '0' AND Zero = '1') ELSE -- BEQ
 					ADDResult WHEN (Branch( 1 ) = '0' AND Branch( 0 ) = '1' AND Zero = '0') ELSE -- BNE
-					ALUResult WHEN (JumpReg = '1') ELSE -- JR
+					ALUResult WHEN (JumpReg = '1' AND Jump = '0') ELSE -- JR
 					instrJump WHEN (Jump = '1') ELSE -- J/JAL
 					PC_inc;
 	PC_out <= PC;

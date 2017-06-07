@@ -25,10 +25,10 @@ ARCHITECTURE behavior OF Execute IS
 	--Lógica que gera os códigos de operação na ALU
 	--	Necessário alterar para implementar SLL/SRL (i.e. fazer outra Tabela-Verdade)
 	--	Favor testar todas as instruções implementadas antes e após alterar a lógica!!!
-	ALU_ctl( 0 ) <= ( Funct( 0 ) OR Funct( 3 ) ) AND ALUOp(1 );
+	ALU_ctl( 0 ) <= ((( Funct( 0 ) OR Funct( 3 ) ) AND ALUOp(1 )));
 	ALU_ctl( 1 ) <= ( NOT Funct( 2 ) ) OR (NOT ALUOp( 1 ) );
 	ALU_ctl( 2 ) <= ( Funct( 1 ) AND ALUOp( 1 )) OR ALUOp( 0 );
-	ALU_ctl( 3 ) <= Funct(3); --Convenção: 1000 é Jump, ver tabela no Patterson
+	ALU_ctl( 3 ) <= Funct(3) AND NOT Funct(5); --Convenção: 1000 é Jump, ver tabela no Patterson
 	
 	iAux <= Read_data2 WHEN Alu_src = '0' ELSE Signal_Ext;
 	
