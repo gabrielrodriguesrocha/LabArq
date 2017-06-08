@@ -8,7 +8,8 @@ ENTITY Exp05 IS
 			LCD_RW, LCD_ON	: OUT STD_LOGIC;
 			DATA				: INOUT	STD_LOGIC_VECTOR(7 DOWNTO 0);
 			clockPB			: IN STD_LOGIC;
-			InstrALU			: IN STD_LOGIC);
+			InstrALU			: IN STD_LOGIC;
+			AddrPC			: IN STD_LOGIC);
 END Exp05;
 
 ARCHITECTURE exec OF Exp05 IS
@@ -117,7 +118,14 @@ BEGIN
 	LCD_ON <= '1';
 	
 	-- Inserir MUX para DisplayData
-	displayData <= DataInstr WHEN InstrALU = '1' ELSE AluResult; 
+	-- 00 -> DataInstr
+	-- 01 -> ALUResult
+	-- 10 -> ADDResult (offset das operações de memória)
+	-- 11 -> AluOp
+	displayData <= DataInstr WHEN InstrALU = '0' AND AddrPC = '0' ELSE
+						AluResult WHEN InstrALU = '0' AND AddrPC = '1' ELSE
+						X"000000" & auxAddResult WHEN instrALU = '1' AND AddrPC = '0' ELSE
+						X"0000000" & "00" & auxAluOp; --Concatenação temporaria para ver o AluOp
 						
 	HexDisplayDT <= "0000" & PCAddr & DisplayData;
 
