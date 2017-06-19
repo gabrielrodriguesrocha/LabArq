@@ -1,7 +1,0 @@
-Para facilitar a reconstrução do projeto, os arquivos .jdi, .qpf, .qsf e .qws foram incluídos.
-
-Basta abrir o arquivo Exp05.qpf.
-Em caso de falha, basta criar um novo projeto no Quartus e importar os arquivos .vhd, DMEMORY.mif e program.mif.
-
-O arquivo program.mif contém um programa teste de todas as instruções implementadas.
-O arquivo wave.do contém comandos VSIM que podem facilitar na criação de ondas para simulação.

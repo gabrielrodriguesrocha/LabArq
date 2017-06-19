@@ -5,4 +5,5 @@ add wave  \
 sim:/exp06/DataInstr \
 sim:/exp06/PCAddr \
 sim:/exp06/DMemoryOut \
-sim:/exp06/auxAluOp
+sim:/exp06/auxAluOp \
+sim:/exp06/EXE/Alu_ctl

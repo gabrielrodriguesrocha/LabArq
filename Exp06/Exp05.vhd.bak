@@ -1,18 +1,17 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY Exp05 IS
+ENTITY Exp03 IS
 	PORT(	reset				: IN STD_LOGIC;
 			clock48MHz		: IN STD_LOGIC;
 			LCD_RS, LCD_E	: OUT	STD_LOGIC;
 			LCD_RW, LCD_ON	: OUT STD_LOGIC;
 			DATA				: INOUT	STD_LOGIC_VECTOR(7 DOWNTO 0);
-			clockPB			: IN STD_LOGIC;
-			InstrALU			: IN STD_LOGIC;
-			AddrPC			: IN STD_LOGIC);
-END Exp05;
+			clock				: IN STD_LOGIC;
+			InstrALU			: IN STD_LOGIC);
+END Exp03;
 
-ARCHITECTURE exec OF Exp05 IS
+ARCHITECTURE exec OF Exp03 IS
 COMPONENT LCD_Display
 	GENERIC(NumHexDig: Integer:= 11);
 	PORT(	reset, clk_48Mhz	: IN	STD_LOGIC;
@@ -25,15 +24,11 @@ END COMPONENT;
 COMPONENT Ifetch
 	PORT(	reset			: in STD_LOGIC;
 			clock			: in STD_LOGIC;
-			Branch		: in STD_LOGIC_VECTOR(1 DOWNTO 0);
+			Branch		: in STD_LOGIC;
 			Zero			: in STD_LOGIC;
-			Jump			: in STD_LOGIC;
-			JumpReg		: in STD_LOGIC;
 			ADDResult 	: in STD_LOGIC_VECTOR(7 DOWNTO 0);
-			ALUResult	: in STD_LOGIC_VECTOR(7 DOWNTO 0);
 			PC_out		: out STD_LOGIC_VECTOR(7 DOWNTO 0);
-			Instruction	: out STD_LOGIC_VECTOR(31 DOWNTO 0);
-			InstrJump	: in STD_LOGIC_VECTOR(7 DOWNTO 0));
+			Instruction	: out STD_LOGIC_VECTOR(31 DOWNTO 0));
 END COMPONENT;
 
 COMPONENT Idecode
@@ -47,37 +42,28 @@ COMPONENT Idecode
 				Sign_extend : OUT STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 				clock,reset	: IN 	STD_LOGIC;
 				MemToReg 	: IN  STD_LOGIC;
-				Jump			: IN STD_LOGIC;
-				Link			: IN STD_LOGIC;
-				PC				: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 				MemAddr		: OUT STD_LOGIC_VECTOR( 7 DOWNTO 0));
 END COMPONENT;
 
 COMPONENT Control
-	 PORT( Opcode 		: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
+	PORT( Opcode 		: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
 			RegDst 		: OUT STD_LOGIC;
 			RegWrite 	: OUT STD_LOGIC;
 			MemToReg 	: OUT STD_LOGIC;
 			MemRead 		: OUT STD_LOGIC;
 			MemWrite 	: OUT STD_LOGIC;
 			AluSrc		: OUT STD_LOGIC;
-			Branch		: OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-			Jump			: OUT STD_LOGIC;
-			Link			: OUT STD_LOGIC;
-			AluOp			: OUT STD_LOGIC_VECTOR(1 DOWNTO 0));
+			Branch		: OUT STD_LOGIC);
 END COMPONENT;
 	
 COMPONENT Execute
 	PORT( Read_data1 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Read_data2 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 			PC				: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
-			AluOp			: IN STD_LOGIC_VECTOR (1 DOWNTO 0);
-			Funct			: IN STD_LOGIC_VECTOR (5 DOWNTO 0);
 			ALU_Result 	: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Signal_Ext 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Alu_Src		: IN STD_LOGIC;
 			Zero			: OUT STD_LOGIC;
-			JumpReg		: OUT STD_LOGIC;
 			ADDResult 	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0));
 			
 END COMPONENT;
@@ -106,26 +92,15 @@ SIGNAL auxMemToReg : STD_LOGIC;
 SIGNAL auxMemRead  : STD_LOGIC;
 SIGNAL DMemoryOut  : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL auxMemAddr  : STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL auxBranch 	 : STD_LOGIC_VECTOR(1 DOWNTO 0);
+SIGNAL auxBranch 	 : STD_LOGIC;
 SIGNAL auxZero		 : STD_LOGIC;
 SIGNAL auxAddResult : STD_LOGIC_VECTOR (7 DOWNTO 0);
-SIGNAL auxAluOp	 : STD_LOGIC_VECTOR(1 DOWNTO 0);
-SIGNAL auxJump		 : STD_LOGIC;
-SIGNAL auxLink 	 : STD_LOGIC;
-SIGNAL auxJumpReg	 : STD_LOGIC;
 
 BEGIN
 	LCD_ON <= '1';
 	
 	-- Inserir MUX para DisplayData
-	-- 00 -> DataInstr
-	-- 01 -> ADDResult (offset das operaÃ§Ãµes de memÃ³ria)
-	-- 10 -> ALUResult
-	-- 11 -> DMemoryOut
-	displayData <= DataInstr WHEN InstrALU = '0' AND AddrPC = '0' ELSE
-						AluResult WHEN InstrALU = '0' AND AddrPC = '1' ELSE
-						X"000000" & auxAddResult WHEN instrALU = '1' AND AddrPC = '0' ELSE
-						DMemoryOut; 
+	displayData <= DataInstr WHEN InstrALU = '1' ELSE AluResult; 
 						
 	HexDisplayDT <= "0000" & PCAddr & DisplayData;
 
@@ -142,16 +117,12 @@ BEGIN
 	IFT: Ifetch
 	PORT MAP(
 		reset			=> reset,
-		clock 		=> clockPB,
+		clock 		=> clock,
 		PC_out		=> PCAddr,
 		Instruction	=> DataInstr,
 		Branch		=> auxBranch,
 		Zero			=> auxZero,
-		Jump			=> auxJump,
-		JumpReg		=> auxJumpReg,
-		AddResult	=> auxAddResult,
-		ALUResult	=> ALUResult(7 DOWNTO 0),
-		InstrJump 	=> DataInstr(7 DOWNTO 0));
+		AddResult	=> auxAddResult);
 		
 	CTR: Control
 	PORT MAP(
@@ -162,10 +133,7 @@ BEGIN
 		MemRead 	=> auxMemRead,
 		MemWrite => auxMemWrite,
 		AluSrc	=> auxAluSrc,
-		Branch	=> auxBranch,
-		AluOp 	=> auxAluOp,
-		Jump		=> auxJump,
-		Link		=> auxLink);
+		Branch	=> auxBranch);
 
 	IDEC: Idecode
 	PORT MAP(	
@@ -177,13 +145,10 @@ BEGIN
 			RegWrite 	=> RegWrite,
 			RegDst 		=> RegDst,
 			Sign_extend => SignExtend,
-			clock			=> clockPB,
+			clock			=> clock,
 			reset 		=> reset,
 			MemToReg 	=> auxMemToReg,
-			MemAddr		=> auxMemAddr,
-			Jump			=> auxJump,
-			Link			=> auxLink,
-			PC				=> PCAddr);
+			MemAddr		=> auxMemAddr);
 
 	EXE: Execute
 	PORT MAP( 
@@ -194,10 +159,7 @@ BEGIN
 			PC			  => PCAddr,
 			Alu_Src	  => auxAluSrc,
 			Zero		  => auxZero,
-			JumpReg	  => auxJumpReg,
-			AddResult  => auxAddResult,
-			AluOp		  => auxAluOp,
-			Funct		  => DataInstr(5 DOWNTO 0));
+			AddResult  => auxAddResult);
 
 
 	DMEM: Dmemory
@@ -207,6 +169,6 @@ BEGIN
         	write_data 	=> readData2,
 	   	MemRead		=> auxMemRead,		
 			Memwrite	 	=> auxMemWrite,
-         clock			=> clockPB,
+         clock			=> clock,
 			reset			=> reset);
 END exec;

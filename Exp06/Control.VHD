@@ -61,7 +61,9 @@ BEGIN
 	Link <= '1' WHEN Opcode = "000011" ELSE '0';
 	
 	AluOp(1) <= R_format;
-	AluOp(0) <= '1' WHEN Opcode = "000100" ELSE '0';
+	AluOp(0) <= '1' WHEN Opcode = "000100" ELSE 
+					'1' WHEN Opcode = "000101" ELSE 
+					'0';
 	
    END behavior;
 

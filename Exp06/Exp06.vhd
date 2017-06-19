@@ -1,7 +1,7 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY Exp05 IS
+ENTITY Exp06 IS
 	PORT(	reset				: IN STD_LOGIC;
 			clock48MHz		: IN STD_LOGIC;
 			LCD_RS, LCD_E	: OUT	STD_LOGIC;
@@ -10,9 +10,9 @@ ENTITY Exp05 IS
 			clockPB			: IN STD_LOGIC;
 			InstrALU			: IN STD_LOGIC;
 			AddrPC			: IN STD_LOGIC);
-END Exp05;
+END Exp06;
 
-ARCHITECTURE exec OF Exp05 IS
+ARCHITECTURE exec OF Exp06 IS
 COMPONENT LCD_Display
 	GENERIC(NumHexDig: Integer:= 11);
 	PORT(	reset, clk_48Mhz	: IN	STD_LOGIC;
@@ -75,6 +75,7 @@ COMPONENT Execute
 			Funct			: IN STD_LOGIC_VECTOR (5 DOWNTO 0);
 			ALU_Result 	: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
 			Signal_Ext 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+			Shamt			: IN STD_LOGIC_VECTOR (4 DOWNTO 0);
 			Alu_Src		: IN STD_LOGIC;
 			Zero			: OUT STD_LOGIC;
 			JumpReg		: OUT STD_LOGIC;
@@ -119,13 +120,13 @@ BEGIN
 	
 	-- Inserir MUX para DisplayData
 	-- 00 -> DataInstr
-	-- 01 -> ALUResult
-	-- 10 -> ADDResult (offset das operações de memória)
-	-- 11 -> AluOp
+	-- 01 -> ADDResult (offset das operaÃ§Ãµes de memÃ³ria)
+	-- 10 -> ALUResult
+	-- 11 -> DMemoryOut
 	displayData <= DataInstr WHEN InstrALU = '0' AND AddrPC = '0' ELSE
 						AluResult WHEN InstrALU = '0' AND AddrPC = '1' ELSE
 						X"000000" & auxAddResult WHEN instrALU = '1' AND AddrPC = '0' ELSE
-						X"0000000" & "00" & auxAluOp; --Concatenação temporaria para ver o AluOp
+						DMemoryOut; 
 						
 	HexDisplayDT <= "0000" & PCAddr & DisplayData;
 
@@ -197,6 +198,7 @@ BEGIN
 			JumpReg	  => auxJumpReg,
 			AddResult  => auxAddResult,
 			AluOp		  => auxAluOp,
+			Shamt 	  => DataInstr(10 DOWNTO 6),
 			Funct		  => DataInstr(5 DOWNTO 0));
 
 
