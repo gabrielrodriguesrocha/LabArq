@@ -35,7 +35,7 @@ ARCHITECTURE behavior OF Execute IS
 	
 	--Lógica que gera os códigos de operação na ALU
 	-- Observe que agora as codificações são um pouco diferentes
-	-- O código referente ao SRL é uma "gambiarrazinha" pois seu function code é inteiramente nulo
+	-- O código referente ao SLL é uma "gambiarrazinha" pois seu function code é inteiramente nulo
 	-- Acho que a lógica abaixo é uma das que minimizam o número de operações lógicas
 	-- Observe também que como a única operação I-format implementada (addi) faz apenas soma,
 	-- todas as operações requerem que AluOp(1) (sinal de R-format) esteja alto, caso contrário a soma é realizada.
