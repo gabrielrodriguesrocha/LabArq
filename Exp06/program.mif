@@ -21,7 +21,7 @@ ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 
 CONTENT BEGIN
-	000  :   00850820; -- add $1, $4, $5
+	000  :   014D482A; -- slt $9, $9, $C
 	001  :   AC010003; -- sw $1, 0x3($0) 
 	002  :   8C040003; -- lw $4, 0x3($0)
 	003  :   00842022; -- sub $4, $4, $4

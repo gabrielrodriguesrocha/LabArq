@@ -40,7 +40,7 @@ ARCHITECTURE behavior OF Execute IS
 	-- Observe também que como a única operação I-format implementada (addi) faz apenas soma,
 	-- todas as operações requerem que AluOp(1) (sinal de R-format) esteja alto, caso contrário a soma é realizada.
 	ALU_ctl(4) <= (NOT(Funct(5) OR Funct(4) OR Funct(3) OR Funct(2) OR Funct(1) OR Funct(0))) AND AluOp(1);
-	ALU_ctl(3) <= AluOp(1) AND Funct(3);
+	ALU_ctl(3) <= AluOp(1) AND Funct(3) AND NOT Funct(5);
 	ALU_ctl(2) <= Funct(1) AND AluOp(1);
 	Alu_ctl(1) <= NOT (((Funct(5) AND Funct(2)) OR (NOT (Funct(5)) AND Funct(3)) OR (NOT (Funct(5)) AND Funct(1))) AND AluOp(1));
 	Alu_ctl(0) <= ((Funct(2) AND Funct(0)) OR (Funct(3) AND Funct(1))) AND AluOp(1);
@@ -50,7 +50,7 @@ ARCHITECTURE behavior OF Execute IS
 	PROCESS ( ALU_ctl, Read_data1, Read_data2, iAux, Shamt )
 		VARIABLE TMP	: BOOLEAN;
 		BEGIN
-		TMP := Read_data1 > iAux;
+		TMP := Read_data1 < iAux;
 		-- Seleciona a operação da ALU
 		CASE ALU_ctl IS
 			-- Operação E lógico
