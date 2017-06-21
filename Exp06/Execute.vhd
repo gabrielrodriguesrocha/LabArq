@@ -2,7 +2,6 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_ARITH.ALL;
 USE IEEE.STD_LOGIC_SIGNED.ALL;
---USE IEEE.NUMERIC_STD.ALL;
 
 ENTITY Execute IS
 	PORT( Read_data1 	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
@@ -23,6 +22,7 @@ ARCHITECTURE behavior OF Execute IS
 	SIGNAL iAux 	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 	SIGNAL Alu_ctl : STD_LOGIC_VECTOR(4 DOWNTO 0);
 	SIGNAL Shift	: STD_LOGIC_VECTOR(1 DOWNTO 0);
+	 
 	BEGIN
 	
 	--Lógica que gera os códigos de operação na ALU
@@ -48,8 +48,9 @@ ARCHITECTURE behavior OF Execute IS
 	iAux <= Read_data2 WHEN Alu_src = '0' ELSE Signal_Ext;
 	
 	PROCESS ( ALU_ctl, Read_data1, Read_data2, iAux, Shamt )
-		VARIABLE TMP	: STD_LOGIC_VECTOR(31 DOWNTO 0);
+		VARIABLE TMP	: BOOLEAN;
 		BEGIN
+		TMP := Read_data1 > iAux;
 		-- Seleciona a operação da ALU
 		CASE ALU_ctl IS
 			-- Operação E lógico
@@ -61,7 +62,12 @@ ARCHITECTURE behavior OF Execute IS
 			-- Operação de Subtração
 			WHEN "00110" => ALU_Result <= Read_data1 - iAux;
 			-- Operação SLT
-			WHEN "00111" => ALU_Result <= Read_data1 - iAux;
+			WHEN "00111" => 
+				if TMP = true THEN
+					ALU_Result <= X"00000001";
+				else
+					ALU_Result <= X"00000000";
+				end if;
 			-- Operação JR (truque sujo)
 			WHEN "01000" => ALU_Result <= Read_data1;
 			-- Operação SRL
