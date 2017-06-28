@@ -1,0 +1,61 @@
+-- Copyright (C) 1991-2013 Altera Corporation
+-- Your use of Altera Corporation's design tools, logic functions 
+-- and other software and tools, and its AMPP partner logic 
+-- functions, and any output files from any of the foregoing 
+-- (including device programming or simulation files), and any 
+-- associated documentation or information are expressly subject 
+-- to the terms and conditions of the Altera Program License 
+-- Subscription Agreement, Altera MegaCore Function License 
+-- Agreement, or other applicable license agreement, including, 
+-- without limitation, that your use is for the sole purpose of 
+-- programming logic devices manufactured by Altera and sold by 
+-- Altera or its authorized distributors.  Please refer to the 
+-- applicable agreement for further details.
+
+-- Quartus II generated Memory Initialization File (.mif)
+
+WIDTH=32;
+DEPTH=256;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+	000  :   20090006; --addi $t1 $zero 0x6
+	001  :   AC090000; --sw $t1 0($zero)
+	002  :   20090002; --addi $t1 $zero 0x2
+	003  :   AC090001; --sw $t1 1($zero)
+	004  :   20090003; --addi $t1 $zero 0x3
+	005  :   AC090002; --sw $t1 2($zero)
+	006  :   20090005; --addi $t1 $zero 0x5
+	007  :   AC090003; --sw $t1 3($zero)
+	008  :   20090007; --addi $t1 $zero 0x7
+	009  :   AC090004; --sw $t1 4($zero)
+	00A  :   20090004; --addi $t1 $zero 0x4
+	00B  :   AC090005; --sw $t1 5($zero)
+	00C  :   00000000; --
+	00D  :   20090006; --addi $t1 $zero 0x6
+	00E  :   00006820; --add $t5 $zero zero
+	00F  :   8DA80000; --lw $t0 0($t5)
+	010  :   11A90014; --beq $t5 $t1 (Saida)
+	011  :   11A00008; --beq $t5 $zero (Inicia)
+	012  :   010B702A; --slt $t6 $t0 $t3
+	013  :   15C0000B; --bne $t6 $zero (MudaMin)
+	014  :   010C702A; --slt $t6 $t0 $t4
+	015  :   11C0000C; --beq $t6 $zero (Mudamax)
+	016  :   01485020; --add $t1 $t1 $t0
+	017  :   21AD0001; --addi $t5 $t5 1
+	018  :   0800000F; --j 0x14 (Loop)
+	019  :   00000000; --
+	01A  :   00005020; --(Inicia)add $t2 $zero $zero
+	01B  :   00085820; --add $t3 $zero $t0
+	01C  :   00086020; --add $t4 $zero $t0
+	01D  :   08000012; --j 0x12
+	01E  :   00000000; --
+	01F  :   00085820; --(MudaMin)add $t3 $zero $t0
+	020  :   08000014; --j 0x14
+	021  :   00000000; --
+	022  :   00086020; --(MudaMax)add $t4 $zero $t0
+	023  :   08000016; --j 0x16
+	[024..0FF]  :   00000000; --
+END;
